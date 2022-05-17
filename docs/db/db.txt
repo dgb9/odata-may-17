@@ -1,0 +1,24 @@
+create table crt
+(
+    crt_id varchar(255) not null
+        primary key,
+    name   varchar(255) not null,
+    info1  varchar(255) null,
+    val1   double       null,
+    val2   double       null,
+    val3   double       null
+);
+
+create table detail
+(
+    detail_id    varchar(255) not null
+        primary key,
+    crt_id       varchar(255) not null,
+    name1        varchar(255) not null,
+    another_name varchar(255) null,
+    val_detail_1 int          null,
+    val_detail_2 int          null,
+    constraint fk_detail_crt
+        foreign key (crt_id) references crt (crt_id)
+);
+

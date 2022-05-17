@@ -1,0 +1,11 @@
+done - doua tabele
+done - populate tables
+- access jpa
+- test jpa access
+- copy mapper and other artifacts from work stuff
+- olingo first item
+- olingo second item
+- navigation between the two
+- verify the stuff works properly
+- then start with the grouping information
+
