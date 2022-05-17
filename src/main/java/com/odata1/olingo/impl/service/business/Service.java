@@ -57,7 +57,7 @@ public class Service {
         return collection;
     }
 
-    public List<ComplexValue> getBunchOfWhatever() throws ODataApplicationException {
+    public ComplexValue getBunchOfWhatever() throws ODataApplicationException {
         List<ComplexValue> list = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -73,6 +73,12 @@ public class Service {
             list.add(e);
         }
 
-        return list;
+        ComplexValue returnValue = new ComplexValue();
+        List<Property> values = returnValue.getValue();
+        values.add(new Property(null, "Description", ValueType.PRIMITIVE, "this is the description here"));
+        values.add(new Property(null, "Another", ValueType.PRIMITIVE, "the second elements"));
+        values.add(new Property(null, "Here", ValueType.COLLECTION_COMPLEX, list));
+
+        return returnValue;
     }
 }

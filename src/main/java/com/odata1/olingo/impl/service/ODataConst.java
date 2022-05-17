@@ -21,6 +21,11 @@ public class ODataConst {
     public static final String CT_WHATEVER = "Whatever";
     public static final FullQualifiedName CT_WHATEVER_FQN = new FullQualifiedName(NAMESPACE, CT_WHATEVER);
 
+    public static final String CT_COMPLICATED = "Complicated";
+    public static final FullQualifiedName CT_COMPLICATED_FQN = new FullQualifiedName(NAMESPACE, CT_COMPLICATED);
+
+
+
 
 
     public static final String ES_CRT = "Crts";

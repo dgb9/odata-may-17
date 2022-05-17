@@ -92,6 +92,14 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             type = new CsdlComplexType();
             type.setProperties(Arrays.asList(firstName, lastName));
             type.setName(ODataConst.CT_WHATEVER);
+        } else if (ODataConst.CT_COMPLICATED_FQN.equals(complexTypeName)) {
+            CsdlProperty description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty another = new CsdlProperty().setName("Another").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty whatever = new CsdlProperty().setName("Here").setType(ODataConst.CT_WHATEVER_FQN).setCollection(true);
+
+            type = new CsdlComplexType();
+            type.setProperties(Arrays.asList(description, another, whatever));
+            type.setName(ODataConst.CT_COMPLICATED);
         }
 
         return type;
@@ -142,7 +150,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         schema.setEntityTypes(entityTypes);
 
         // add complex types
-        List<CsdlComplexType> complexTypes = Collections.singletonList(getComplexType(ODataConst.CT_WHATEVER_FQN));
+        List<CsdlComplexType> complexTypes = Arrays.asList(
+                getComplexType(ODataConst.CT_WHATEVER_FQN),
+                getComplexType(ODataConst.CT_COMPLICATED_FQN)
+        );
         schema.setComplexTypes(complexTypes);
 
         // add functions
@@ -212,8 +223,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             List<CsdlParameter> parameters = Arrays.asList(paramCountFirst, paramCountSecond);
 
             CsdlReturnType returnType = new CsdlReturnType();
-            returnType.setCollection(true);
-            returnType.setType(ODataConst.CT_WHATEVER_FQN);
+            returnType.setType(ODataConst.CT_COMPLICATED_FQN);
 
             CsdlFunction function = new CsdlFunction();
             function.setName(ODataConst.FUNCTION_COUNT_CATEGORIES_FQN.getName());

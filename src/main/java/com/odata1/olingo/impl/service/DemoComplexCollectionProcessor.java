@@ -63,9 +63,9 @@ public class DemoComplexCollectionProcessor implements ComplexCollectionProcesso
         ContextURL contextUrl = ContextURL.with().selectList(selectList).build();
 
         ComplexSerializerOptions opts = ComplexSerializerOptions.with().contextURL(contextUrl).select(selectOption).expand(expandOption).build();
-        List<ComplexValue> collection = service.getBunchOfWhatever();
+        ComplexValue returnValue = service.getBunchOfWhatever();
 
-        SerializerResult serializedContent = serializer.complexCollection(serviceMetadata, complexType, new Property(null, "whatever", ValueType.COLLECTION_COMPLEX, collection), opts);
+        SerializerResult serializedContent = serializer.complexCollection(serviceMetadata, complexType, new Property(null, "info11", ValueType.COMPLEX, returnValue), opts);
 
         // Finally: configure the response object: set the body, headers and status code
         oDataResponse.setContent(serializedContent.getContent());
