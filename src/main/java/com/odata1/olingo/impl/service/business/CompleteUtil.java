@@ -39,4 +39,12 @@ public class CompleteUtil {
 
         return value;
     }
+
+    public static CompleteData readCompleteData(ComplexValue value) {
+        return null;
+    }
+
+    public static PairValueData readPairValueData(ComplexValue value) {
+        return null;
+    }
 }

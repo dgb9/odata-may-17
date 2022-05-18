@@ -1,19 +1,13 @@
 package com.odata1.olingo.controller;
 
 import com.odata1.olingo.impl.service.DemoActionComplexProcessor;
-import com.odata1.olingo.impl.service.DemoComplexCollectionProcessor;
-import com.odata1.olingo.impl.service.DemoComplexProcessor;
-import com.odata1.olingo.impl.service.business.Service;
 import com.odata1.olingo.impl.service.provider.DemoEdmProvider;
-import com.odata1.olingo.impl.service.DemoEntityCollectionProcessor;
-import com.odata1.olingo.impl.service.DemoEntityProcessor;
 import org.apache.olingo.commons.api.edmx.EdmxReference;
 import org.apache.olingo.server.api.OData;
 import org.apache.olingo.server.api.ODataHttpHandler;
 import org.apache.olingo.server.api.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +21,6 @@ public class ODataController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ODataController.class);
 
-    private Service service;
-
     @RequestMapping(path = "/odata/**", method = {RequestMethod.GET, RequestMethod.POST})
     public void odataController(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -37,11 +29,7 @@ public class ODataController {
             ServiceMetadata edm = odata.createServiceMetadata(new DemoEdmProvider(), new ArrayList<EdmxReference>());
 
             ODataHttpHandler handler = odata.createHandler(edm);
-            handler.register(new DemoEntityCollectionProcessor(service));
-            handler.register(new DemoEntityProcessor(service));
-            handler.register(new DemoComplexCollectionProcessor(service));
-            handler.register(new DemoComplexProcessor(service));
-            handler.register(new DemoActionComplexProcessor(service));
+            handler.register(new DemoActionComplexProcessor());
 
             req.setAttribute("requestMapping", "/odata");
 
@@ -51,10 +39,5 @@ public class ODataController {
         catch (Exception e) {
             LOG.error("odata general servlet error", e);
         }
-    }
-
-    @Autowired
-    public void setService(Service service) {
-        this.service = service;
     }
 }

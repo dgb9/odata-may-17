@@ -1,6 +1,5 @@
 package com.odata1.olingo.impl.service;
 
-import com.odata1.olingo.impl.service.business.Service;
 import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.ContextURL;
 import org.apache.olingo.commons.api.data.Parameter;
@@ -17,26 +16,26 @@ import org.apache.olingo.server.api.ODataLibraryException;
 import org.apache.olingo.server.api.ODataRequest;
 import org.apache.olingo.server.api.ODataResponse;
 import org.apache.olingo.server.api.ServiceMetadata;
+import org.apache.olingo.server.api.deserializer.DeserializerResult;
 import org.apache.olingo.server.api.deserializer.ODataDeserializer;
 import org.apache.olingo.server.api.processor.ActionComplexProcessor;
 import org.apache.olingo.server.api.serializer.ComplexSerializerOptions;
 import org.apache.olingo.server.api.serializer.ODataSerializer;
 import org.apache.olingo.server.api.serializer.SerializerResult;
 import org.apache.olingo.server.api.uri.UriInfo;
+import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceAction;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 
+import java.util.List;
 import java.util.Map;
 
 public class DemoActionComplexProcessor implements ActionComplexProcessor {
-    private final Service service;
-
     private OData oData;
     private ServiceMetadata serviceMetadata;
 
-    public DemoActionComplexProcessor(Service service) {
-        this.service = service;
+    public DemoActionComplexProcessor() {
     }
 
     @Override
@@ -48,12 +47,19 @@ public class DemoActionComplexProcessor implements ActionComplexProcessor {
     @Override
     public void processActionComplex(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType requestFormat, ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
 
-        final EdmAction edmAction = ((UriResourceAction) uriInfo.asUriInfoResource().getUriResourceParts()
-                .get(0)).getAction();
+        List<UriResource> parts = uriInfo.asUriInfoResource().getUriResourceParts();
+        int partsSize = parts.size();
+
+        UriResourceAction resourceAction = (UriResourceAction) parts.get(partsSize - 1);
+
+        final EdmAction edmAction = resourceAction.getAction();
         final ODataDeserializer deserializer = oData.createDeserializer(requestFormat);
-        final Map<String, Parameter> actionParameter = deserializer.actionParameters(oDataRequest.getBody(), edmAction)
-                .getActionParameters();
-        Parameter param = actionParameter.get("Combined");
+
+        DeserializerResult actionParams = deserializer.actionParameters(oDataRequest.getBody(), edmAction);
+        Map<String, Parameter> actionParameter = actionParams.getActionParameters();
+
+        Parameter param = actionParameter.get(ODataConst.PARAMETER_COMBINED);
+
         ComplexValue val = (ComplexValue) param.getValue();
         val.getValue().stream().map((vl) -> {
             String name = vl.getName();
