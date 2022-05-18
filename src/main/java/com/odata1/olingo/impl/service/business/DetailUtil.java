@@ -1,6 +1,6 @@
 package com.odata1.olingo.impl.service.business;
 
-import com.odata1.olingo.impl.jpa.data.DetailData;
+import com.odata1.olingo.impl.data.DetailData;
 import com.odata1.olingo.impl.service.ODataConst;
 import com.odata1.olingo.impl.service.provider.DetailConst;
 import com.odata1.olingo.impl.tools.EdmIdHolder;
@@ -8,7 +8,6 @@ import com.odata1.olingo.impl.tools.EdmUtil;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.data.ValueType;
-import org.apache.olingo.server.api.ODataApplicationException;
 
 import java.util.List;
 

@@ -1,34 +1,25 @@
-package com.odata1.olingo.impl.jpa.data;
+package com.odata1.olingo.impl.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Objects;
 
-@Entity
-@Table(name = "detail")
 public class DetailData {
-    @Id
-    @Column(name = "detail_id")
     private String id;
-
-    @Column(name = "crt_id")
     private String crtId;
-
-    @Column(name = "name1")
     private String name;
-
-    @Column(name = "another_name")
     private String anotherName;
-
-    @Column(name = "val_detail_1")
     private int val1;
-
-    @Column(name = "val_detail_2")
     private int val2;
 
     public DetailData() {
+    }
+
+    public DetailData(String id, String crtId, String name, String anotherName, int val1, int val2) {
+        this.id = id;
+        this.crtId = crtId;
+        this.name = name;
+        this.anotherName = anotherName;
+        this.val1 = val1;
+        this.val2 = val2;
     }
 
     public String getId() {

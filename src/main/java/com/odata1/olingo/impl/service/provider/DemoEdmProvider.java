@@ -1,9 +1,12 @@
 package com.odata1.olingo.impl.service.provider;
 
 import com.odata1.olingo.impl.service.ODataConst;
+import com.odata1.olingo.impl.service.business.DataConst;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
+import org.apache.olingo.commons.api.edm.provider.CsdlAction;
+import org.apache.olingo.commons.api.edm.provider.CsdlActionImport;
 import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
@@ -86,8 +89,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         CsdlComplexType type = null;
 
         if (ODataConst.CT_WHATEVER_FQN.equals(complexTypeName)) {
-            CsdlProperty firstName = new CsdlProperty().setName("FirstName").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-            CsdlProperty lastName = new CsdlProperty().setName("LastName").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty firstName = new CsdlProperty().setName(DataConst.FIELD_FIRST_NAME).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty lastName = new CsdlProperty().setName(DataConst.FIELD_LAST_NAME).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
             type = new CsdlComplexType();
             type.setProperties(Arrays.asList(firstName, lastName));
@@ -100,6 +103,21 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             type = new CsdlComplexType();
             type.setProperties(Arrays.asList(description, another, whatever));
             type.setName(ODataConst.CT_COMPLICATED);
+        } else if (ODataConst.CT_PAIR_VALUE_FQN.equals(complexTypeName)) {
+            CsdlProperty name = new CsdlProperty().setName(DataConst.FIELD_NAME).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty strValue = new CsdlProperty().setName(DataConst.FIELD_STR_VALUE).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
+            type = new CsdlComplexType();
+            type.setProperties(Arrays.asList(name, strValue));
+            type.setName(ODataConst.CT_PAIR_VALUE);
+        } else if (ODataConst.CT_COMPLETE_DATA_FQN.equals(complexTypeName)) {
+            CsdlProperty firstName = new CsdlProperty().setName(DataConst.FIELD_FIRST_NAME).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty lastName = new CsdlProperty().setName(DataConst.FIELD_LAST_NAME).setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty items = new CsdlProperty().setName(DataConst.FIELD_ITEMS).setType(ODataConst.CT_PAIR_VALUE_FQN).setCollection(true);
+
+            type = new CsdlComplexType();
+            type.setProperties(Arrays.asList(firstName, lastName, items));
+            type.setName(ODataConst.CT_COMPLETE_DATA);
         }
 
         return type;
@@ -152,13 +170,20 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // add complex types
         List<CsdlComplexType> complexTypes = Arrays.asList(
                 getComplexType(ODataConst.CT_WHATEVER_FQN),
-                getComplexType(ODataConst.CT_COMPLICATED_FQN)
+                getComplexType(ODataConst.CT_COMPLICATED_FQN),
+                getComplexType(ODataConst.CT_PAIR_VALUE_FQN),
+                getComplexType(ODataConst.CT_COMPLETE_DATA_FQN)
         );
+
         schema.setComplexTypes(complexTypes);
 
         // add functions
         List<CsdlFunction> functions = getFunctions(ODataConst.FUNCTION_COUNT_CATEGORIES_FQN);
         schema.setFunctions(functions);
+
+        // the actions
+        List<CsdlAction> actions = getActions(ODataConst.ACTION_GET_BIG_VALUE_FQN);
+        schema.setActions(actions);
 
         // add EntityContainer
         schema.setEntityContainer(getEntityContainer());
@@ -246,6 +271,46 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                         .setFunction(ODataConst.FUNCTION_COUNT_CATEGORIES_FQN)
                         .setEntitySet(ODataConst.ES_DETAIL)
                         .setIncludeInServiceDocument(true);
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<CsdlAction> getActions(FullQualifiedName actionName) throws ODataException {
+        List<CsdlAction> res = new ArrayList<>();
+
+        if (ODataConst.ACTION_GET_BIG_VALUE_FQN.equals(actionName)) {
+            CsdlParameter param = new CsdlParameter();
+            param.setName(ODataConst.PARAMETER_COMBINED);
+            param.setType(ODataConst.CT_COMPLETE_DATA_FQN);
+            param.setNullable(false);
+            param.setCollection(false);
+
+            List<CsdlParameter> paramList = Collections.singletonList(param);
+            CsdlReturnType returnType = new CsdlReturnType().setType(ODataConst.CT_COMPLETE_DATA_FQN);
+
+            CsdlAction action = new CsdlAction();
+
+            action.setName(ODataConst.ACTION_GET_BIG_VALUE);
+            action.setParameters(paramList);
+            action.setReturnType(returnType);
+
+            res.add(action);
+        }
+
+        return res;
+    }
+
+    @Override
+    public CsdlActionImport getActionImport(FullQualifiedName entityContainer, String actionImportName) throws ODataException {
+        CsdlActionImport res = null;
+        if (entityContainer.equals(ODataConst.CONTAINER)) {
+            if (actionImportName.equals(ODataConst.ACTION_GET_BIG_VALUE_FQN.getName())) {
+                res = new CsdlActionImport()
+                        .setName(actionImportName)
+                        .setAction(ODataConst.ACTION_GET_BIG_VALUE_FQN);
             }
         }
 

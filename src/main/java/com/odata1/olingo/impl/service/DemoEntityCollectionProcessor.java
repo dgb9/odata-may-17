@@ -27,6 +27,7 @@ import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 import org.apache.olingo.server.core.uri.UriResourceFunctionImpl;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,12 +48,20 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
         this.serviceMetadata = serviceMetadata;
     }
 
-    public void readEntityCollection(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws ODataApplicationException, SerializerException {
+    public void readEntityCollection(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws ODataApplicationException, SerializerException  {
         if (isFunctionProcessing(uriInfo)) {
-            processFunction(oDataRequest, oDataResponse, uriInfo, contentType);
+            try {
+                processFunction(oDataRequest, oDataResponse, uriInfo, contentType);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
         else if (isEntitySet(uriInfo)) {
-            processEntitySet(oDataRequest, oDataResponse, uriInfo, contentType);
+            try {
+                processEntitySet(oDataRequest, oDataResponse, uriInfo, contentType);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
         else {
             throw new ODataApplicationException(
@@ -61,7 +70,7 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
         }
     }
 
-    private void processFunction(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws SerializerException, ODataApplicationException {
+    private void processFunction(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws SerializerException, ODataApplicationException, URISyntaxException {
         // get the function name, the parameters and then dispatch the calls
         UriResourceFunctionImpl functionData = (UriResourceFunctionImpl) uriInfo.getUriResourceParts().get(0);
         EdmFunction edmFunction = functionData.getFunction();
@@ -125,7 +134,7 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
         return res;
     }
 
-    private void processEntitySet(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws ODataApplicationException, SerializerException {
+    private void processEntitySet(ODataRequest oDataRequest, ODataResponse oDataResponse, UriInfo uriInfo, ContentType contentType) throws ODataApplicationException, SerializerException, URISyntaxException {
         EdmEntitySet edmEntitySet = getEdmEntitySet(uriInfo);
 
         // 2nd: fetch the data from backend for this requested EntitySetName // it has to be delivered as EntitySet object
@@ -165,7 +174,7 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
         return edmEntitySet;
     }
 
-    private EntityCollection fetchDatabaseData(String edmSetName, UriInfo uriInfo) throws ODataApplicationException {
+    private EntityCollection fetchDatabaseData(String edmSetName, UriInfo uriInfo) throws ODataApplicationException, URISyntaxException {
         return service.fetchCollectionData(edmSetName, uriInfo);
     }
 

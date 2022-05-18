@@ -1,5 +1,6 @@
 package com.odata1.olingo.controller;
 
+import com.odata1.olingo.impl.service.DemoActionComplexProcessor;
 import com.odata1.olingo.impl.service.DemoComplexCollectionProcessor;
 import com.odata1.olingo.impl.service.DemoComplexProcessor;
 import com.odata1.olingo.impl.service.business.Service;
@@ -40,6 +41,7 @@ public class ODataController {
             handler.register(new DemoEntityProcessor(service));
             handler.register(new DemoComplexCollectionProcessor(service));
             handler.register(new DemoComplexProcessor(service));
+            handler.register(new DemoActionComplexProcessor(service));
 
             req.setAttribute("requestMapping", "/odata");
 

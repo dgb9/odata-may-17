@@ -1,0 +1,25 @@
+POST http://localhost:8080/odata/GetBigValue
+Content-Type: application/json
+
+{
+  "Combined": {
+    "FirstName": "value for the first name",
+    "LastName": "last name here",
+    "Items": [
+      {
+        "Name": "name1",
+        "StrValue": "str value for item number 2"
+      },
+      {
+        "Name": "name2",
+        "StrValue": "str value for item number 2"
+      },
+      {
+        "Name": "name3",
+        "StrValue": "str value for item number 3"
+      }
+    ]
+  }
+}
+
+###

@@ -24,9 +24,11 @@ public class ODataConst {
     public static final String CT_COMPLICATED = "Complicated";
     public static final FullQualifiedName CT_COMPLICATED_FQN = new FullQualifiedName(NAMESPACE, CT_COMPLICATED);
 
+    public static final String CT_PAIR_VALUE = "PairValue";
+    public static final FullQualifiedName CT_PAIR_VALUE_FQN = new FullQualifiedName(NAMESPACE, CT_PAIR_VALUE);
 
-
-
+    public static final String CT_COMPLETE_DATA = "CompleteData";
+    public static final FullQualifiedName CT_COMPLETE_DATA_FQN = new FullQualifiedName(NAMESPACE, CT_COMPLETE_DATA);
 
     public static final String ES_CRT = "Crts";
     public static final String ES_DETAIL = "Details";
@@ -43,6 +45,10 @@ public class ODataConst {
     public static final String FUNCTION_COUNT_CATEGORIES = "CountCategories";
     public static final FullQualifiedName FUNCTION_COUNT_CATEGORIES_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_COUNT_CATEGORIES);
 
+    // Action
+    public static final String ACTION_GET_BIG_VALUE = "GetBigValue";
+    public static final FullQualifiedName ACTION_GET_BIG_VALUE_FQN = new FullQualifiedName(NAMESPACE, ACTION_GET_BIG_VALUE);
+
     // Function/Action Parameters
     public static final String PARAMETER_RESET_ONE = "ResetOne";
     public static final String PARAMETER_RESET_TWO = "ResetTwo";
@@ -50,4 +56,5 @@ public class ODataConst {
     public static final String PARAMETER_COUNT_FIRST = "CountFirst";
     public static final String PARAMETER_COUNT_SECOND = "CountSecond";
 
+    public static final String PARAMETER_COMBINED = "Combined";
 }
