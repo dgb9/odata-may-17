@@ -17,8 +17,6 @@ public class ODataConst {
     public static final String CT_COMPLETE_DATA = "CompleteData";
     public static final FullQualifiedName CT_COMPLETE_DATA_FQN = new FullQualifiedName(NAMESPACE, CT_COMPLETE_DATA);
 
-    public static final int MAXIMUM_TOP_FETCH = 1000;
-
     // Action
     public static final String ACTION_GET_BIG_VALUE = "GetBigValue";
     public static final FullQualifiedName ACTION_GET_BIG_VALUE_FQN = new FullQualifiedName(NAMESPACE, ACTION_GET_BIG_VALUE);

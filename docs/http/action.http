@@ -1,4 +1,4 @@
-POST http://localhost:8080/odata/GetBigValue?$format=xml
+POST http://localhost:8080/odata/GetBigValue?$select=FirstName,LastName
 Content-Type: application/json
 
 {
