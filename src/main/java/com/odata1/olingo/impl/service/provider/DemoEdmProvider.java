@@ -10,7 +10,6 @@ import org.apache.olingo.commons.api.edm.provider.CsdlActionImport;
 import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlParameter;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlReturnType;
@@ -47,11 +46,6 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         }
 
         return type;
-    }
-
-    @Override
-    public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) {
-        return null;
     }
 
     @Override
